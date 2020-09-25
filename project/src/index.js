@@ -1,47 +1,30 @@
-import { GraphQLServer } from 'graphql-yoga'
+import { GraphQLServer, PubSub } from 'graphql-yoga'
+import db from './db'
+import Query from './resolvers/Query'
+import Mutation from './resolvers/Mutation'
+import Subscription from './resolvers/Subscription'
+import User from './resolvers/User'
+import Post from './resolvers/Post'
+import Comment from './resolvers/Comment'
 
-//? Scalar Types = String, Boolean, Int, Float, ID
-
-// ! type definition(schema)
-
-const typeDefs = `
-    type Query {
-        title: String!
-        price: Float!
-        releaseYear: Int
-        rating: Float
-        inStock: Boolean!
-        sold: Boolean!
-    }
-`
-
-// ! resolvers
-const resolvers = {
-    Query: {
-        title(){
-            return 'Nike Air Max'
-        },
-        price(){
-            return 124.64
-        },
-        releaseYear(){
-            return 1992
-        },
-        rating(){
-            return 4.5
-        },
-        inStock(){
-            return false
-        },
-        sold(){
-            return true
-        }
-    }
-}
+const pubsub = new PubSub()
 
 const server = new GraphQLServer({
-    typeDefs,
-    resolvers
+    typeDefs: './src/schema.graphql',
+    resolvers: {
+        Query,
+        Mutation,
+        Subscription,
+        User,
+        Post,
+        Comment
+    },
+    context: {
+        db,
+        pubsub
+    }
 })
 
-server.start(() => console.log('Server is running'))
+server.start(() => {
+    console.log('The server is up!')
+})
