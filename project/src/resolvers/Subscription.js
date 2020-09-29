@@ -26,7 +26,7 @@ const Subscription = {
     },
     post: {
         subscribe(parent, args, {db, pubsub}, info){
-            return pubsub.asyncIterator("posts")
+            return pubsub.asyncIterator("post")
         }
     }
 }
