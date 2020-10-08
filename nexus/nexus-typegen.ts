@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-
+import * as ContextModule from "./api/context"
 
 
 
@@ -28,6 +28,13 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenRootTypes {
+  Mutation: {};
+  Post: { // root type
+    body?: string | null; // String
+    id?: number | null; // Int
+    published?: boolean | null; // Boolean
+    title?: string | null; // String
+  }
   Query: {};
 }
 
@@ -40,12 +47,32 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    createDraft: NexusGenRootTypes['Post']; // Post!
+    publish: NexusGenRootTypes['Post']; // Post!
+  }
+  Post: { // field return type
+    body: string | null; // String
+    id: number | null; // Int
+    published: boolean | null; // Boolean
+    title: string | null; // String
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+    posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createDraft: { // args
+      body: string; // String!
+      title: string; // String!
+    }
+    publish: { // args
+      draftId: number; // Int!
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -53,7 +80,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query";
+export type NexusGenObjectNames = "Mutation" | "Post" | "Query";
 
 export type NexusGenInputNames = never;
 
@@ -66,7 +93,7 @@ export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
 export type NexusGenUnionNames = never;
 
 export interface NexusGenTypes {
-  context: any;
+  context: ContextModule.Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   argTypes: NexusGenArgTypes;
