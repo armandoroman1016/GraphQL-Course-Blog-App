@@ -2,6 +2,7 @@ import { makeSchema } from '@nexus/schema'
 import { join } from 'path'
 
 import * as typeDefs from './graphql'
+import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 
 export const schema = makeSchema({
     types: typeDefs,
@@ -18,6 +19,7 @@ export const schema = makeSchema({
         ],
         contextType: "ContextModule.Context",               // 3
       },
+      plugins: [nexusSchemaPrisma()]
 })
 
 /*
